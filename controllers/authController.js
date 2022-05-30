@@ -4,7 +4,7 @@ const register = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    next(new Error('please provide all values'));
+    next(new Error('Please provide both email and password'));
   }
 
   try {
@@ -34,18 +34,15 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    next(new Error('Please provide all values'));
+    next(new Error('Please provide both email and password'));
   }
 
   try {
     const user = await User.findOne({ email }).select('+password');
-    if (!user) {
-      throw new Error('Invalid Credentials');
-    }
     try {
       const isPasswordCorrect = await user.comparePassword(password);
       if (!isPasswordCorrect) {
-        throw new Error('Invalid Credentials');
+        throw new Error('Email or password is not correct. Please try again.');
       }
     } catch (err) {
       next(err);
