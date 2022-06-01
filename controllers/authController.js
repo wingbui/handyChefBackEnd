@@ -1,10 +1,15 @@
 const User = require('../models/User.js');
 
 const register = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, userType } = req.body;
 
-  if (!email || !password) {
-    next(new Error('Please provide both email and password'));
+  if (!email || !password || !userType) {
+    next(new Error('Please provide email, password and user type'));
+  }
+
+  console.log('userTpe', userType);
+  if (userType !== 'customer' && userType !== 'chef') {
+    next(new Error("User type is either 'customer' or 'chef'"));
   }
 
   try {
@@ -17,11 +22,12 @@ const register = async (req, res, next) => {
   }
 
   try {
-    const user = await User.create({ email, password });
+    const user = await User.create({ email, password, userType });
     const token = user.createJWT();
     res.status(201).json({
       user: {
         email: user.email,
+        userType: user.userType
       },
       token,
     });
@@ -34,7 +40,7 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    next(new Error('Please provide both email and password'));
+    next(new Error('Please provide email and password'));
   }
 
   try {

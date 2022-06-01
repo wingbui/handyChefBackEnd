@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
+  userType: {
+    type: String,
+    required: [true, 'Please provide user type'],
+  },
 });
 
 UserSchema.pre('save', async function () {
