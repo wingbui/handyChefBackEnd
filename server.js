@@ -9,7 +9,10 @@ dotenv.config();
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./connectDB.js');
 const authRouter = require('./routes/authRoutes.js');
+
 app.use(cors());
+app.options('*', cors());
+
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
