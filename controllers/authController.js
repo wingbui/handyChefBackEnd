@@ -7,7 +7,6 @@ const register = async (req, res, next) => {
     next(new Error('Please provide email, password and user type'));
   }
 
-  console.log('userTpe', userType);
   if (userType !== 'customer' && userType !== 'chef') {
     next(new Error("User type is either 'customer' or 'chef'"));
   }
