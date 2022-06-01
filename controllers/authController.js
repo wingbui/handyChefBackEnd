@@ -44,6 +44,9 @@ const login = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      throw new Error('Please check again email or password.');
+    }
     try {
       const isPasswordCorrect = await user.comparePassword(password);
       if (!isPasswordCorrect) {
