@@ -7,7 +7,7 @@ const authenticateUser = async (req, res, next) => {
   if (!authorizationHeader || !authorizationHeader.startsWith('Bearer')) {
     next(
       new Error(
-        'Hey my friend, this is a protected api endpoint, you are not authenticated yet so do not access this api, put in the Bearer token in the authorization header please'
+        'Hey this is a protected api endpoint, you are not authenticated put in the Bearer token in the authorization header please'
       )
     );
     return;
@@ -30,7 +30,11 @@ const authenticateUser = async (req, res, next) => {
 const restrictedTo = (userType) => {
   return (req, res, next) => {
     if (req.user.userType !== userType) {
-      next(new Error('Dear customer, only chef can access this api endpoint.'));
+      next(
+        new Error(
+          `Dear ${req.user.userType}, only ${userType} can access this api endpoint.`
+        )
+      );
       return;
     }
     next();
