@@ -4,7 +4,7 @@ const ChefService = require('../models/ChefService');
 const postChefService = async (req, res, next) => {
   try {
     const chefService = await ChefService.find({ chef: req.user._id });
-    if (chefService || chefService.length > 0) {
+    if (chefService[0]) {
       throw new Error(
         'You already created one chef service. Not allowed to create more'
       );
@@ -40,13 +40,15 @@ const postChefService = async (req, res, next) => {
 };
 
 const getChefServiceChefSide = async (req, res, next) => {
-  console.log(req.user);
   try {
-    const chefService = await ChefService.find({ chef: req.user._id })[0];
-    console.log(chefService);
-    res.status(200).json({ chefService });
+    const chefService = await ChefService.find({ chef: req.user._id });
+    if (!chefService[0]) {
+      throw new Error('you do not have chef service yet');
+    } else {
+      res.status(200).json({ chefService: chefService[0] });
+    }
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
