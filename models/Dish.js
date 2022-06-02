@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 
 const DishSchema = new mongoose.Schema({
   name: {
-    type: 'string',
+    type: String,
     required: true,
   },
 
   price: {
-    type: 'Number',
+    type: Number,
     required: true,
   },
 
