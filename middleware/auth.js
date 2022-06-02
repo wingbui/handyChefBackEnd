@@ -1,6 +1,7 @@
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader || !authorizationHeader.startsWith('Bearer')) {
@@ -9,12 +10,12 @@ const authenticateUser = (req, res, next) => {
     );
   }
 
-  const result = authorizationHeader.split(' ')[1];
-  req.user = { userId: result.userId };
+  const token = authorizationHeader.split(' ')[1];
 
   try {
     const result = jwt.verify(token, 'secret');
-    console.log(result);
+    const user = await User.findById(result.userId);
+    req.user = user;
     next();
   } catch (err) {
     throw new Error(
@@ -23,4 +24,13 @@ const authenticateUser = (req, res, next) => {
   }
 };
 
-module.exports = { authenticateUser };
+const restrictedTo = (userType) => {
+  return (req, res, next) => {
+    if (req.user.userType !== userType) {
+      throw new Error('Dear customer, only chef can access this api endpoint.');
+    }
+    next();
+  };
+};
+
+module.exports = { authenticateUser, restrictedTo };
