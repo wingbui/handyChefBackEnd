@@ -30,7 +30,8 @@ const authenticateUser = async (req, res, next) => {
 const restrictedTo = (userType) => {
   return (req, res, next) => {
     if (req.user.userType !== userType) {
-      throw new Error('Dear customer, only chef can access this api endpoint.');
+      next(new Error('Dear customer, only chef can access this api endpoint.'));
+      return;
     }
     next();
   };
