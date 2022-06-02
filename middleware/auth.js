@@ -5,9 +5,12 @@ const authenticateUser = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader || !authorizationHeader.startsWith('Bearer')) {
-    throw new Error(
-      'Hey my friend, this is a protected api endpoint, you are not authenticated yet so do not access this api, put in the Bearer token in the authorization header please'
+    next(
+      new Error(
+        'Hey my friend, this is a protected api endpoint, you are not authenticated yet so do not access this api, put in the Bearer token in the authorization header please'
+      )
     );
+    return;
   }
 
   const token = authorizationHeader.split(' ')[1];
