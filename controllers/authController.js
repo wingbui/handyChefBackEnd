@@ -26,7 +26,7 @@ const register = async (req, res, next) => {
     res.status(201).json({
       user: {
         email: user.email,
-        userType: user.userType
+        userType: user.userType,
       },
       token,
     });
@@ -51,14 +51,14 @@ const login = async (req, res, next) => {
       const isPasswordCorrect = await user.comparePassword(password);
       if (!isPasswordCorrect) {
         throw new Error('Email or password is not correct. Please try again.');
+      } else {
+        const token = user.createJWT();
+        user.password = undefined;
+        res.status(200).json({ user, token });
       }
     } catch (err) {
       next(err);
     }
-
-    const token = user.createJWT();
-    user.password = undefined;
-    res.status(200).json({ user, token });
   } catch (err) {
     next(err);
   }
