@@ -14,10 +14,8 @@ router
 
 router
   .route('/getChefServiceChefSide')
-  .get(authenticateUser, getChefServiceChefSide);
+  .get(authenticateUser, restrictedTo('chef'), getChefServiceChefSide);
 
-router
-  .route('/:id')
-  .get(authenticateUser, getChefService);
+router.route('/:id').get(authenticateUser, getChefService);
 
 module.exports = router;
