@@ -18,6 +18,6 @@ router
 
 router
   .route('/:id')
-  .get(authenticateUser, restrictedTo('customer'), getChefService);
+  .get(authenticateUser, getChefService);
 
 module.exports = router;
