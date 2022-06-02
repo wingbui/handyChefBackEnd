@@ -1,6 +1,19 @@
 const ChefService = require('../models/ChefService');
 
+// chef side
 const postChefService = async (req, res, next) => {
+  try {
+    const chefService = await ChefService.find({ chef: req.user._id });
+    if (chefService) {
+      throw new Error(
+        'You already created one chef service. Not allowed to create more'
+      );
+    }
+  } catch (err) {
+    next(err);
+    return;
+  }
+
   const {
     cuisine,
     profileImage,
@@ -26,7 +39,28 @@ const postChefService = async (req, res, next) => {
   }
 };
 
-const getChefService = async (req, res, next) => {};
+const getChefServiceChefSide = async (req, res, next) => {
+  console.log(req.user);
+  try {
+    const chefService = await ChefService.find({ chef: req.user._id });
+    console.log(chefService);
+    res.status(200).json({ hi: 'ok' });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// customer side
+const getChefService = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const chefService = await ChefService.findById(id);
+    res.status(200).json({ chefService });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const getAllChefServices = async (req, res, next) => {};
 
@@ -35,6 +69,7 @@ const patchChefService = async (req, res, next) => {};
 module.exports = {
   postChefService,
   getChefService,
+  getChefServiceChefSide,
   getAllChefServices,
   patchChefService,
 };
