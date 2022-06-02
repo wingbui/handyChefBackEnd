@@ -4,11 +4,13 @@ const register = async (req, res, next) => {
   const { email, password, userType } = req.body;
 
   if (!email || !password || !userType) {
-    throw new Error('Please provide email, password and user type');
+    next(new Error('Please provide email, password and user type'));
+    return;
   }
 
   if (userType !== 'customer' && userType !== 'chef') {
-    throw new Error("User type is either 'customer' or 'chef'");
+    next(new Error("User type is either 'customer' or 'chef'"));
+    return;
   }
 
   try {
@@ -17,10 +19,9 @@ const register = async (req, res, next) => {
       throw new Error('Email already in use');
     }
   } catch (err) {
-    next(err)
+    next(err);
     return;
   }
-
 
   try {
     const user = await User.create({ email, password, userType });
@@ -42,7 +43,8 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw new Error('Please provide email and password');
+    next(new Error('Please provide email and password'));
+    return;
   }
 
   try {
