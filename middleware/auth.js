@@ -21,8 +21,8 @@ const authenticateUser = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    throw new Error(
-      'Hi, the token you passed in is invalid, check the token again'
+    next(
+      new Error('Hi, the token you passed in is invalid, check the token again')
     );
   }
 };
