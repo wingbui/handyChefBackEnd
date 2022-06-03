@@ -5,6 +5,11 @@ const ChefServiceSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
   },
+  location: {
+    type: String,
+    required: true,
+    default: "Vancouver, British Columbia, Canada"
+  },
   cuisine: [{ type: String, required: true }],
   profileImage: {
     type: String,

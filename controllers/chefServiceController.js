@@ -45,7 +45,6 @@ const postChefService = async (req, res, next) => {
   }
 };
 
-// customer side
 const getChefService = async (req, res, next) => {
   const id = req.params.id;
 
@@ -57,14 +56,47 @@ const getChefService = async (req, res, next) => {
   }
 };
 
-const getAllChefServices = async (req, res, next) => {};
+const getAllChefServices = async (req, res, next) => {
+  const { cuisine, bookingDate, search } = req.query;
+
+  let queryObj = {};
+  if (cuisine) {
+    queryObj.cuisine = cuisine;
+  }
+  if (bookingDate) {
+    queryObj.currentBookings[bookingDate] = bookingDate;
+  }
+
+  if (search) {
+    queryObj.location = { $regex: search, $options: 'i' };
+  }
+
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page -1) * limit;
+
+  try {
+    let result = ChefService.find(queryObj);
+    result = result.skip(skip).limit(limit);
+
+    const chefServices = await result;
+
+    const totalChefServices = await ChefService.countDocuments(queryObj)
+    const pages = Math.ceil(totalChefServices/limit)
+
+    res
+      .status(200)
+      .json({ chefServices, totalChefServices: chefServices.length, pages: pages });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const patchChefService = async (req, res, next) => {};
 
 module.exports = {
   postChefService,
   getChefService,
-  getChefServiceChefSide,
   getAllChefServices,
   patchChefService,
 };
