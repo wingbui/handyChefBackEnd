@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const Dish = require('../models/Dish')
 
 const postDish = async (req, res, next) => {
