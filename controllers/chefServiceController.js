@@ -45,19 +45,6 @@ const postChefService = async (req, res, next) => {
   }
 };
 
-const getChefServiceChefSide = async (req, res, next) => {
-  try {
-    const chefService = await ChefService.find({ chef: req.user._id });
-    if (!chefService[0]) {
-      throw new Error('you do not have chef service yet');
-    } else {
-      res.status(200).json({ chefService: chefService[0] });
-    }
-  } catch (err) {
-    next(err);
-  }
-};
-
 // customer side
 const getChefService = async (req, res, next) => {
   const id = req.params.id;
