@@ -5,7 +5,7 @@ const ChefServiceSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
   },
-  cuisine: [{ type: String }],
+  cuisine: [{ type: String, required: true }],
   profileImage: {
     type: String,
   },
@@ -14,9 +14,11 @@ const ChefServiceSchema = new mongoose.Schema({
   },
   minServed: {
     type: Number,
+    required: true,
   },
   maxServed: {
     type: Number,
+    required: true,
   },
   currentBookings: [],
 });

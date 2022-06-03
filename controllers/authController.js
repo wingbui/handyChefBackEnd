@@ -72,4 +72,10 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+// will work on this later on
+const updateUser = async () => {
+  try {
+    const user = await User.findOne({ _id: req.user.userId });
+  } catch (error) {}
+};
+module.exports = { register, login, updateUser };

@@ -1,16 +1,14 @@
 const ChefService = require('../models/ChefService');
+const User = require('../models/User');
 
 // chef side
 const postChefService = async (req, res, next) => {
-  try {
-    const chefService = await ChefService.find({ chef: req.user._id });
-    if (chefService[0]) {
-      throw new Error(
+  if (req.user.chefService) {
+    next(
+      new Error(
         'You already created one chef service. Not allowed to create more'
-      );
-    }
-  } catch (err) {
-    next(err);
+      )
+    );
     return;
   }
 
@@ -30,8 +28,16 @@ const postChefService = async (req, res, next) => {
   }
 
   req.body.chef = req.user._id;
+
   try {
     const chefService = await ChefService.create(req.body);
+
+    if (chefService) {
+      let user = await User.findOne({ _id: req.user._id });
+      user.chefService = chefService._id;
+      await user.save();
+    }
+
     res.status(201).json(chefService);
   } catch (err) {
     next(err);
