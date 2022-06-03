@@ -3,7 +3,7 @@ const User = require('../models/User');
 
 // chef side
 const postChefService = async (req, res, next) => {
-  if (req.user.chefService) {
+  if (req.user?.chefService) {
     next(
       new Error(
         'You already created one chef service. Not allowed to create more'
