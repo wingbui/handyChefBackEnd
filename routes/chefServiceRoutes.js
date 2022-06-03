@@ -1,20 +1,20 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const {
   postChefService,
   getChefService,
   getChefServiceChefSide,
-} = require('../controllers/chefServiceController.js');
-const { authenticateUser, restrictedTo } = require('../middleware/auth');
+} = require('../controllers/chefServiceController.js')
+const { authenticateUser, restrictedTo } = require('../middleware/auth')
 
 router
   .route('/postChefService')
-  .post(authenticateUser, restrictedTo('chef'), postChefService);
+  .post(authenticateUser, restrictedTo('chef'), postChefService)
 
 router
   .route('/getChefServiceChefSide')
-  .get(authenticateUser, restrictedTo('chef'), getChefServiceChefSide);
+  .get(authenticateUser, restrictedTo('chef'), getChefServiceChefSide)
 
-router.route('/:id').get(authenticateUser, getChefService);
+router.route('/:id').get(authenticateUser, getChefService)
 
-module.exports = router;
+module.exports = router
