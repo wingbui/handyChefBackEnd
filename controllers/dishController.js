@@ -1,35 +1,44 @@
 const mongoose = require('mongoose')
 const Dish = require('../models/Dish')
 
-const postDish = (req, res, next) => {
+const postDish = async (req, res, next) => {
   const { name, price } = req.body
 
-  if (name && !price) {
-    throw new Error(`Please provide a price of the ${name} added`)
-  } else if (!name) {
-    throw new Error(`Please provide atleast 1 dish`)
-  } else if (name && price) {
-    const dish = new Dish({
-      name: name,
-      price: price,
+  if (!name || !price) {
+    next(new Error(`Please provide name and price`))
+    return
+  }
+
+  if (!req.user.chefService) {
+    next(new Error(`You don't have the chef Service yet`))
+    return
+  }
+
+  const chefService = req.user.chefService
+  try {
+    const dish = await Dish.create({
+      name,
+      price,
+      chefService,
     })
-    Dish.save().then((result) => {
-      res.status(201).send({
-        data: dish,
-        message: 'Entry Successfully added !',
-      })
-    })
+    res.status(201).json({ dish })
+  } catch (err) {
+    next(err)
   }
 }
 
-const getDishes = (req, res, next) => {
-  req.body.chef = req.user._id
-  Dish.find({ user: req.user._id })
-    .exec()
-    .then((result) => {
-      res.status(200).send(result)
-    })
-    .catch((err) => console.error(err))
+const getAllDishes = async (req, res, next) => {
+  if (!req.user.chefService) {
+    next(new Error(`You don't have the chef Service yet`))
+    return
+  }
+  const chefService = req.user.chefService
+  try {
+    const dishes = await Dish.find({ chefService })
+    res.status(200).json({ dishes })
+  } catch (err) {
+    next(err)
+  }
 }
 
-modules.exports = { postDish, getDishes }
+module.exports = { postDish, getAllDishes }

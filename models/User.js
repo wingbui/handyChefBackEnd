@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide user type'],
   },
+  chefService: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'ChefService',
+  },
 })
 
 UserSchema.pre('save', async function () {
