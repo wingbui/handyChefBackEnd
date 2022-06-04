@@ -8,7 +8,7 @@ const postDish = async (req, res, next) => {
     return;
   }
 
-  if (!!req.user?.chefService) {
+  if (!req.user?.chefService) {
     next(new Error(`You don't have the chef Service yet`));
     return;
   }
