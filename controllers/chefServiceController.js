@@ -49,7 +49,7 @@ const getChefService = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const chefService = await ChefService.findById(id);
+    const chefService = await ChefService.findById(id).populate('menu');
     res.status(200).json({ chefService });
   } catch (err) {
     next(err);
