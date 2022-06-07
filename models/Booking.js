@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const ChefServiceSchema = new mongoose.Schema({
+const bookingSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
@@ -21,4 +21,4 @@ const ChefServiceSchema = new mongoose.Schema({
   },
 })
 
-module.exports = mongoose.model('ChefService', ChefServiceSchema)
+module.exports = mongoose.model('Booking', bookingSchema)
