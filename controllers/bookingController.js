@@ -1,5 +1,4 @@
 const Booking = require('../models/Booking')
-// const User = require('../models/User')
 
 const createBooking = async (req, res, next) => {
   const {
