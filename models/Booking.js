@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const bookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
@@ -15,7 +15,7 @@ const bookingSchema = new mongoose.Schema({
 
   numberOfCustomers: { type: Number },
 
-  selectedDish: [{ type: mongoose.Schema.ObjectID, reference: 'Dish ' }],
+  selectedDish: [{ type: mongoose.Schema.ObjectId, reference: 'Dish ' }],
 
   notes: { type: String },
 
@@ -28,4 +28,4 @@ const bookingSchema = new mongoose.Schema({
   },
 })
 
-module.exports = mongoose.model('Booking', bookingSchema)
+module.exports = mongoose.model('Booking', BookingSchema)
