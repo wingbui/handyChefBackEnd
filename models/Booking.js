@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema({
   customer: {
@@ -15,7 +15,7 @@ const BookingSchema = new mongoose.Schema({
 
   numberOfCustomers: { type: Number },
 
-  selectedDish: [{ type: mongoose.Schema.ObjectId, reference: 'Dish ' }],
+  selectedDishes: [{ type: mongoose.Schema.ObjectId, reference: 'Dish ' }],
 
   notes: { type: String },
 
@@ -26,6 +26,6 @@ const BookingSchema = new mongoose.Schema({
     enum: ['todo', 'cancelled', 'done'],
     default: 'todo',
   },
-})
+});
 
-module.exports = mongoose.model('Booking', BookingSchema)
+module.exports = mongoose.model('Booking', BookingSchema);
