@@ -23,7 +23,7 @@ app.use(express.json())
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/chefServices', chefServiceRouter)
 app.use('/api/v1/dishes', dishRouter)
-app.use('/api/v1/booking', bookingRouter)
+app.use('/api/v1/bookings', bookingRouter)
 
 app.use(errorHandler)
 

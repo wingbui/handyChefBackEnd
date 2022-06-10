@@ -38,8 +38,10 @@ const createBooking = async (req, res, next) => {
 }
 
 const getAllBookings = async (req, res, next) => {
+  console.log('here')
+  console.log(req.user)
   try {
-    const booking = await Booking.find({ _id: req.user._id })
+    const booking = await Booking.find({ customer: req.user._id })
     res.status(200).json({ booking })
   } catch (err) {
     next(err)
@@ -47,10 +49,8 @@ const getAllBookings = async (req, res, next) => {
 }
 
 const getAllBookingsForChef = async (req, res, next) => {
-  let { chefService } = req.query
-  chefService = req.user?.chefService || chefService
   try {
-    const booking = await Booking.find({ chefService })
+    const booking = await Booking.find({ chefService: req.user.chefService })
     res.status(200).json({ booking })
   } catch (err) {
     next(err)
