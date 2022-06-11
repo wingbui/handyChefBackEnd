@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const ChefServiceSchema = new mongoose.Schema({
   chef: {
@@ -27,6 +27,6 @@ const ChefServiceSchema = new mongoose.Schema({
   },
   currentBookings: [{ type: mongoose.Schema.ObjectId, ref: 'Booking' }],
   menu: [{ type: mongoose.Schema.ObjectId, ref: 'Dish' }],
-})
+});
 
-module.exports = mongoose.model('ChefService', ChefServiceSchema)
+module.exports = mongoose.model('ChefService', ChefServiceSchema);
