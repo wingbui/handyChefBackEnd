@@ -11,10 +11,9 @@ const { authenticateUser, restrictedTo } = require('../middleware/auth')
 router
   .route('/')
   .post(authenticateUser, restrictedTo('customer'), createBooking)
-  .get(getAllBookings)
+  .get(authenticateUser, restrictedTo('customer'), getAllBookings)
 
 router
-  .route('/chef/:id')
+  .route('/chef')
   .get(authenticateUser, restrictedTo('chef'), getAllBookingsForChef)
-
 module.exports = router

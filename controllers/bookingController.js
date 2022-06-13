@@ -1,24 +1,25 @@
-const Booking = require('../models/Booking')
+const Booking = require('../models/Booking');
 
 const createBooking = async (req, res, next) => {
   const {
     bookingDate,
     chefService,
     numberOfCustomers,
-    selectedDish,
+    selectedDishes,
     notes,
     totalPrice,
-  } = req.body
+  } = req.body;
 
   if (
     !bookingDate ||
     !numberOfCustomers ||
-    !selectedDish ||
+    !selectedDishes ||
+    selectedDishes.length <= 0 ||
     !totalPrice ||
     !chefService
   ) {
-    next(new Error('Please enter the * fields'))
-    return
+    next(new Error('Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice'))
+    return;
   } else {
     try {
       const booking = await Booking.create({
@@ -26,35 +27,37 @@ const createBooking = async (req, res, next) => {
         chefService,
         bookingDate,
         numberOfCustomers,
-        selectedDish,
+        selectedDishes,
         notes,
         totalPrice,
-      })
-      res.status(200).json({ booking })
+      });
+      res.status(200).json({ booking });
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
-}
+};
 
 const getAllBookings = async (req, res, next) => {
   try {
-    const booking = await Booking.find({ _id: req.user._id })
-    res.status(200).json({ booking })
+    const booking = await Booking.find({ customer: req.user._id }).populate({
+      path: 'selectedDishes',
+      model: 'Dish',
+    });
+
+    res.status(200).json({ booking });
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 const getAllBookingsForChef = async (req, res, next) => {
-  let { chefService } = req.query
-  chefService = req.user?.chefService || chefService
   try {
-    const booking = await Booking.find({ chefService })
-    res.status(200).json({ booking })
+    const booking = await Booking.find({ chefService: req.user.chefService });
+    res.status(200).json({ booking });
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
-module.exports = { createBooking, getAllBookings, getAllBookingsForChef }
+module.exports = { createBooking, getAllBookings, getAllBookingsForChef };
