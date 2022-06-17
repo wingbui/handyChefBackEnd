@@ -1,4 +1,4 @@
-const Booking = require('../models/Booking');
+const Booking = require('../models/Booking')
 
 const createBooking = async (req, res, next) => {
   const {
@@ -8,7 +8,7 @@ const createBooking = async (req, res, next) => {
     selectedDishes,
     notes,
     totalPrice,
-  } = req.body;
+  } = req.body
 
   if (
     !bookingDate ||
@@ -18,8 +18,12 @@ const createBooking = async (req, res, next) => {
     !totalPrice ||
     !chefService
   ) {
-    next(new Error('Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice'))
-    return;
+    next(
+      new Error(
+        'Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice',
+      ),
+    )
+    return
   } else {
     try {
       const booking = await Booking.create({
@@ -30,34 +34,50 @@ const createBooking = async (req, res, next) => {
         selectedDishes,
         notes,
         totalPrice,
-      });
-      res.status(200).json({ booking });
+      })
+      res.status(200).json({ booking })
     } catch (err) {
-      next(err);
+      next(err)
     }
   }
-};
+}
 
 const getAllBookings = async (req, res, next) => {
   try {
     const booking = await Booking.find({ customer: req.user._id }).populate({
       path: 'selectedDishes',
       model: 'Dish',
-    });
+    })
 
-    res.status(200).json({ booking });
+    res.status(200).json({ booking })
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 
 const getAllBookingsForChef = async (req, res, next) => {
   try {
-    const booking = await Booking.find({ chefService: req.user.chefService });
-    res.status(200).json({ booking });
+    const booking = await Booking.find({ chefService: req.user.chefService })
+    res.status(200).json({ booking })
   } catch (err) {
-    next(err);
+    next(err)
   }
-};
+}
 
-module.exports = { createBooking, getAllBookings, getAllBookingsForChef };
+const getBooking = async (req, res, next) => {
+  const id = req.params.id
+
+  try {
+    const booking = await Booking.findById(id)
+    res.status(200).json({ booking })
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  createBooking,
+  getAllBookings,
+  getAllBookingsForChef,
+  getBooking,
+}
