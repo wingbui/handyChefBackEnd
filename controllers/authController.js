@@ -1,10 +1,10 @@
 const User = require('../models/User.js');
 
 const register = async (req, res, next) => {
-  const { email, password, userType } = req.body;
+  const { firstName, lastName, email, password, userType } = req.body;
 
-  if (!email || !password || !userType) {
-    next(new Error('Please provide email, password and user type'));
+  if (!firstName || !lastName || !email || !password || !userType) {
+    next(new Error('Please provide your fist name, last name, email, password and user type'));
     return;
   }
 
@@ -24,10 +24,18 @@ const register = async (req, res, next) => {
   }
 
   try {
-    const user = await User.create({ email, password, userType });
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      userType,
+    });
     const token = user.createJWT();
     res.status(201).json({
       user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         userType: user.userType,
       },
