@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema({
       ref: 'ChefService',
     },
   ],
+  preferredCuisine: [{ type: String, required: true }],
 });
 
 UserSchema.pre('save', async function () {
