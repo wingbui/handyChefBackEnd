@@ -46,6 +46,9 @@ const UserSchema = new mongoose.Schema({
     },
   ],
   preferredCuisine: [{ type: String }],
+  pushNotificationToken: {
+    type: String,
+  },
 });
 
 UserSchema.pre('save', async function () {
