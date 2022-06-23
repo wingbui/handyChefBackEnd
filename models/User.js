@@ -49,6 +49,9 @@ const UserSchema = new mongoose.Schema({
   pushNotificationToken: {
     type: String,
   },
+  profileImage: {
+    type: String,
+  },
 });
 
 UserSchema.pre('save', async function () {
