@@ -37,15 +37,15 @@ const toggleAddRemoveFavoriteChef = async (req, res, next) => {
 };
 
 const persistPushNotificationToken = async (req, res, next) => {
-  const { pushToken } = req.body;
-  if (!pushToken) {
+  const { pushNotificationToken } = req.body;
+  if (!pushNotificationToken) {
     next(new Error('Please pass in the push notification token'));
     return;
   }
 
   try {
     let currentUser = await User.findById(req.user._id);
-    currentUser.pushNotificationToken = pushToken;
+    currentUser.pushNotificationToken = pushNotificationToken;
     await currentUser.save();
     res.json({ user: currentUser });
   } catch (err) {
