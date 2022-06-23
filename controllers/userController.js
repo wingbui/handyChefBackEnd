@@ -36,4 +36,21 @@ const toggleAddRemoveFavoriteChef = async (req, res, next) => {
   }
 };
 
-module.exports = { toggleAddRemoveFavoriteChef };
+const persistPushNotificationToken = async (req, res, next) => {
+  const { pushNotificationToken } = req.body;
+  if (!pushNotificationToken) {
+    next(new Error('Please pass in the push notification token'));
+    return;
+  }
+
+  try {
+    let currentUser = await User.findById(req.user._id);
+    currentUser.pushNotificationToken = pushNotificationToken;
+    await currentUser.save();
+    res.json({ user: currentUser });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { toggleAddRemoveFavoriteChef, persistPushNotificationToken };

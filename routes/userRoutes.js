@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   toggleAddRemoveFavoriteChef,
+  persistPushNotificationToken,
 } = require('../controllers/userController');
 const { authenticateUser, restrictedTo } = require('../middleware/auth');
 
@@ -13,5 +14,8 @@ router
     toggleAddRemoveFavoriteChef
   );
 
-restrictedTo;
+router
+  .route('/persistPushNotificationToken')
+  .patch(authenticateUser, persistPushNotificationToken);
+
 module.exports = router;

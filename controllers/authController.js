@@ -1,10 +1,15 @@
 const User = require('../models/User.js');
 
 const register = async (req, res, next) => {
-  const { firstName, lastName, email, password, userType } = req.body;
+  const { firstName, lastName, email, password, userType, profileImage } =
+    req.body;
 
   if (!firstName || !lastName || !email || !password || !userType) {
-    next(new Error('Please provide your fist name, last name, email, password and user type'));
+    next(
+      new Error(
+        'Please provide your fist name, last name, email, password and user type'
+      )
+    );
     return;
   }
 
@@ -30,6 +35,7 @@ const register = async (req, res, next) => {
       email,
       password,
       userType,
+      profileImage,
     });
     const token = user.createJWT();
     res.status(201).json({
@@ -38,6 +44,7 @@ const register = async (req, res, next) => {
         lastName: user.lastName,
         email: user.email,
         userType: user.userType,
+        profileImage: user.profileImage,
       },
       token,
     });
