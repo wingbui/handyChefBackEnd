@@ -16,8 +16,8 @@ const dishRouter = require('./routes/dishRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const userRouter = require('./routes/userRoutes');
 
-app.use(cors());
 app.options('*', cors());
+app.use(cors());
 
 app.use(express.json());
 
