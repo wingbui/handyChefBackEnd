@@ -46,6 +46,7 @@ const persistPushNotificationToken = async (req, res, next) => {
   try {
     let currentUser = await User.findById(req.user._id);
     currentUser.pushNotificationToken = pushNotificationToken;
+
     await currentUser.save();
     res.json({ user: currentUser });
   } catch (err) {
@@ -65,6 +66,7 @@ const addPreferredCuisine = async (req, res, next) => {
     let currentUser = await User.findById(req.user._id);
 
     currentUser.preferredCuisine.push(...preferredCuisine);
+    currentUser.preferredCuisine = [...new Set(currentUser.preferredCuisine)];
     await currentUser.save();
     res.json({ user: currentUser });
   } catch (err) {
