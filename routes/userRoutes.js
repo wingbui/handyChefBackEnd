@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   toggleAddRemoveFavoriteChef,
   persistPushNotificationToken,
+  testPush,
 } = require('../controllers/userController');
 const { authenticateUser, restrictedTo } = require('../middleware/auth');
 
@@ -18,4 +19,5 @@ router
   .route('/persistPushNotificationToken')
   .patch(authenticateUser, persistPushNotificationToken);
 
+router.route('/testPush').get(testPush);
 module.exports = router;
