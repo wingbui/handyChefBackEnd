@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   toggleAddRemoveFavoriteChef,
   persistPushNotificationToken,
+  addPreferredCuisine,
 } = require('../controllers/userController');
 const { authenticateUser, restrictedTo } = require('../middleware/auth');
 
@@ -13,6 +14,10 @@ router
     restrictedTo('customer'),
     toggleAddRemoveFavoriteChef
   );
+
+router
+  .route('/customer/addPreferredCuisine')
+  .patch(authenticateUser, restrictedTo('customer'), addPreferredCuisine);
 
 router
   .route('/persistPushNotificationToken')
