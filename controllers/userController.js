@@ -53,4 +53,27 @@ const persistPushNotificationToken = async (req, res, next) => {
   }
 };
 
-module.exports = { toggleAddRemoveFavoriteChef, persistPushNotificationToken };
+const addPreferredCuisine = async (req, res, next) => {
+  const { preferredCuisine } = req.body;
+  console.log(preferredCuisine);
+  if (!preferredCuisine) {
+    next(new Error('Please pass in the push notification token'));
+    return;
+  }
+
+  try {
+    let currentUser = await User.findById(req.user._id);
+
+    currentUser.preferredCuisine.push(...preferredCuisine);
+    await currentUser.save();
+    res.json({ user: currentUser });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  toggleAddRemoveFavoriteChef,
+  persistPushNotificationToken,
+  addPreferredCuisine,
+};
