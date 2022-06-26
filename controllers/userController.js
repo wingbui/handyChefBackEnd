@@ -51,10 +51,11 @@ const testPush = (req, res, next) => {
   messages.push({
     to: pushToken,
     sound: 'default',
-    body: 'This is a test notification',
-    data: { withSome: 'data' },
+    body: 'OK man',
+    data: { payload: { cocacola: 'ahahaha' } },
   });
   let chunks = expo.chunkPushNotifications(messages);
+  console.log(chunks);
   let tickets = [];
   (async () => {
     // Send the chunks to the Expo push notification service. There are
@@ -69,9 +70,9 @@ const testPush = (req, res, next) => {
         // must handle it appropriately. The error codes are listed in the Expo
         // documentation:
         // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
-        res.json({ status: 'done' });
+        res.json({ status: 'Notification success' });
       } catch (error) {
-        console.error(error);
+        next(new Error('Notification failure'));
       }
     }
   })();
