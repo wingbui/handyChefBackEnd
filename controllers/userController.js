@@ -58,7 +58,7 @@ const addPreferredCuisine = async (req, res, next) => {
   const { preferredCuisine } = req.body;
   console.log(preferredCuisine);
   if (!preferredCuisine) {
-    next(new Error('Please pass in the push notification token'));
+    next(new Error('Please pass in the preferred cuisine array'));
     return;
   }
 
