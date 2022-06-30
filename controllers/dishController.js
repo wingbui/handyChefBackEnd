@@ -1,49 +1,50 @@
-const ChefService = require('../models/ChefService')
-const Dish = require('../models/Dish')
+const ChefService = require('../models/ChefService');
+const Dish = require('../models/Dish');
 
 const postDish = async (req, res, next) => {
-  const { name, price } = req.body
+  const { name, price, cuisine } = req.body;
 
-  if (!name || !price) {
-    next(new Error(`Please provide name and price`))
-    return
+  if (!name || !price || !cuisine) {
+    next(new Error(`Please provide name, price, and cuisine`));
+    return;
   }
 
   if (!req.user?.chefService) {
-    next(new Error(`You don't have the chef Service yet`))
-    return
+    next(new Error(`You don't have the chef Service yet`));
+    return;
   }
 
-  const chefService = req.user.chefService
+  const chefService = req.user.chefService;
   try {
     const dish = await Dish.create({
       name,
       price,
+      cuisine,
       chefService,
-    })
+    });
 
     if (dish) {
-      let modifiedChefService = await ChefService.findOne({ _id: chefService })
-      modifiedChefService.menu.push(dish._id)
-      await modifiedChefService.save()
+      let modifiedChefService = await ChefService.findOne({ _id: chefService });
+      modifiedChefService.menu.push(dish._id);
+      await modifiedChefService.save();
     }
 
-    res.status(201).json({ dish })
+    res.status(201).json({ dish });
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 const getAllDishes = async (req, res, next) => {
-  let { chefService } = req.query
-  chefService = req.user?.chefService || chefService
+  let { chefService } = req.query;
+  chefService = req.user?.chefService || chefService;
 
   try {
-    const dishes = await Dish.find({ chefService })
-    res.status(200).json({ dishes })
+    const dishes = await Dish.find({ chefService });
+    res.status(200).json({ dishes });
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
-module.exports = { postDish, getAllDishes }
+module.exports = { postDish, getAllDishes };
