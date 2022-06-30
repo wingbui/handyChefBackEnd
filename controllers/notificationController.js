@@ -1,6 +1,5 @@
 const Notification = require('../models/Notification');
 const { Expo } = require('expo-server-sdk');
-const { json } = require('express');
 
 const sendNewBookingPushNotification = async (receivers, booking) => {
   let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
