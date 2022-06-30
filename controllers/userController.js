@@ -74,8 +74,18 @@ const addPreferredCuisine = async (req, res, next) => {
   }
 };
 
+const getCurrentUser = async (req, res, next) => {
+  try {
+    const currentUser = await User.findOne({ _id: req.user._id });
+    res.json({ currentUser });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   toggleAddRemoveFavoriteChef,
   persistPushNotificationToken,
   addPreferredCuisine,
+  getCurrentUser,
 };
