@@ -15,9 +15,10 @@ const chefServiceRouter = require('./routes/chefServiceRoutes');
 const dishRouter = require('./routes/dishRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const userRouter = require('./routes/userRoutes');
+const notificationRouter = require('./routes/notificationRoutes');
 
-app.use(cors());
 app.options('*', cors());
+app.use(cors());
 
 app.use(express.json());
 
@@ -26,6 +27,7 @@ app.use('/api/v1/chefServices', chefServiceRouter);
 app.use('/api/v1/dishes', dishRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/notifications', notificationRouter);
 
 app.use(errorHandler);
 
