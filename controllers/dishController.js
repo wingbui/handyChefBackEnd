@@ -1,3 +1,4 @@
+const { request } = require('express');
 const ChefService = require('../models/ChefService');
 const Dish = require('../models/Dish');
 
@@ -47,4 +48,16 @@ const getAllDishes = async (req, res, next) => {
   }
 };
 
-module.exports = { postDish, getAllDishes };
+const getRecommendedDishes = async (req, res, next) => {
+  let { preferredCuisine } = req.user;
+
+  try {
+    const dishes = await Dish.find({ cuisine: { $in: preferredCuisine } });
+
+    res.status(200).json({ dishes });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { postDish, getAllDishes, getRecommendedDishes };
