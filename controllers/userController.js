@@ -123,6 +123,7 @@ const getCurrentUser = async (req, res, next) => {
       populate: {
         path: 'chef',
         model: 'User',
+        select: '-favoriteChefs -preferredCuisine -chefService'
       },
     });
     res.json({ currentUser });
