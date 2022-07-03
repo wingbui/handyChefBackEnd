@@ -120,6 +120,10 @@ const getCurrentUser = async (req, res, next) => {
     let currentUser = await User.findById(req.user._id).populate({
       path: 'favoriteChefs',
       model: 'ChefService',
+      populate: {
+        path: 'chef',
+        model: 'User',
+      },
     });
     res.json({ currentUser });
   } catch (error) {
