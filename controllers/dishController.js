@@ -43,6 +43,17 @@ const postDish = async (req, res, next) => {
   }
 };
 
+const getDish = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const dish = await Dish.findById(id);
+    res.status(200).json({ dish });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getAllDishes = async (req, res, next) => {
   let { chefService } = req.query;
   chefService = req.user?.chefService || chefService;
@@ -70,4 +81,4 @@ const getRecommendedDishes = async (req, res, next) => {
   }
 };
 
-module.exports = { postDish, getAllDishes, getRecommendedDishes };
+module.exports = { postDish, getDish, getAllDishes, getRecommendedDishes };
