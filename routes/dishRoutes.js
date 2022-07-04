@@ -6,12 +6,15 @@ const {
   postDish,
   getAllDishes,
   getRecommendedDishes,
+  getDish,
 } = require('../controllers/dishController');
 
 router
   .route('/')
   .post(authenticateUser, restrictedTo('chef'), postDish)
   .get(authenticateUser, getAllDishes);
+
+router.route('/:id').get(authenticateUser, getDish);
 
 router
   .route('/getRecommendedDishes')
