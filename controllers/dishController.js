@@ -3,10 +3,15 @@ const ChefService = require('../models/ChefService');
 const Dish = require('../models/Dish');
 
 const postDish = async (req, res, next) => {
-  const { name, price, cuisine } = req.body;
+  const { name, price, cuisine, dishImage, isSpecial } = req.body;
 
   if (!name || !price || !cuisine) {
     next(new Error(`Please provide name, price, and cuisine`));
+    return;
+  }
+
+  if (isSpecial && !dishImage) {
+    next(new Error(`You need image for special dish`));
     return;
   }
 
@@ -22,6 +27,8 @@ const postDish = async (req, res, next) => {
       price,
       cuisine,
       chefService,
+      dishImage,
+      isSpecial,
     });
 
     if (dish) {
@@ -52,7 +59,10 @@ const getRecommendedDishes = async (req, res, next) => {
   let { preferredCuisine } = req.user;
 
   try {
-    const dishes = await Dish.find({ cuisine: { $in: preferredCuisine } });
+    const dishes = await Dish.find({
+      cuisine: preferredCuisine,
+      isSpecial: 'true',
+    });
 
     res.status(200).json({ dishes });
   } catch (err) {
