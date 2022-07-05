@@ -49,7 +49,9 @@ const getChefService = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const chefService = await ChefService.findById(id).populate('menu');
+    const chefService = await ChefService.findById(id)
+      .populate('menu')
+      .populate({ path: 'chef', select: '-preferredCuisine -_id -chefService -favoriteChefs' });
     res.status(200).json({ chefService });
   } catch (err) {
     next(err);
