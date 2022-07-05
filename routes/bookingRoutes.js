@@ -1,23 +1,30 @@
-const express = require("express")
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 const {
   createBooking,
   getAllBookings,
   getAllBookingsForChef,
-  getBooking,
-} = require("../controllers/bookingController")
+  getCustomerBooking,
+  getChefBooking,
+} = require('../controllers/bookingController');
 
-const { authenticateUser, restrictedTo } = require("../middleware/auth")
-
-router
-  .route("/")
-  .post(authenticateUser, restrictedTo("customer"), createBooking)
-  .get(authenticateUser, restrictedTo("customer"), getAllBookings)
+const { authenticateUser, restrictedTo } = require('../middleware/auth');
 
 router
-  .route("/chef")
-  .get(authenticateUser, restrictedTo("chef"), getAllBookingsForChef)
+  .route('/')
+  .post(authenticateUser, restrictedTo('customer'), createBooking)
+  .get(authenticateUser, restrictedTo('customer'), getAllBookings);
 
-router.route("/:id").get(authenticateUser, getBooking)
+router
+  .route('/chef')
+  .get(authenticateUser, restrictedTo('chef'), getAllBookingsForChef);
 
-module.exports = router
+router
+  .route('/chef/:id')
+  .get(authenticateUser, restrictedTo('chef'), getChefBooking);
+
+router
+  .route('/customer/:id')
+  .get(authenticateUser, restrictedTo('customer'), getCustomerBooking);
+
+module.exports = router;
