@@ -1,31 +1,19 @@
 const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema({
-  customer: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-  },
-
-  chefService: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'ChefService',
-  },
-
+  address: { type: String, required: true },
   bookingDate: { type: Date },
-
-  numberOfCustomers: { type: Number },
-
-  selectedDishes: [{ type: mongoose.Schema.ObjectId, reference: 'Dish ' }],
-
+  chefService: { type: mongoose.Schema.ObjectId, ref: 'ChefService' },
+  customer: { type: mongoose.Schema.ObjectId, ref: 'User' },
   notes: { type: String },
-
-  totalPrice: { type: Number },
-
+  numberOfCustomers: { type: Number },
+  selectedDishes: [{ type: mongoose.Schema.ObjectId, reference: 'Dish ' }],
   status: {
     type: String,
     enum: ['todo', 'cancelled', 'done'],
     default: 'todo',
   },
+  totalPrice: { type: Number },
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);

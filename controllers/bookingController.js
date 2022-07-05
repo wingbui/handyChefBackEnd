@@ -1,5 +1,4 @@
 const Booking = require('../models/Booking');
-const ChefService = require('../models/ChefService');
 
 const createBooking = async (req, res, next) => {
   const {
@@ -9,15 +8,17 @@ const createBooking = async (req, res, next) => {
     selectedDishes,
     notes,
     totalPrice,
+    address,
   } = req.body;
 
   if (
+    !address ||
     !bookingDate ||
+    !chefService ||
     !numberOfCustomers ||
     !selectedDishes ||
-    selectedDishes.length <= 0 ||
     !totalPrice ||
-    !chefService
+    selectedDishes.length <= 0
   ) {
     next(
       new Error(
@@ -29,11 +30,12 @@ const createBooking = async (req, res, next) => {
     try {
       const booking = await Booking.create({
         customer: req.user._id,
-        chefService,
+        address,
         bookingDate,
+        chefService,
+        notes,
         numberOfCustomers,
         selectedDishes,
-        notes,
         totalPrice,
       });
       res.status(200).json({ booking });
