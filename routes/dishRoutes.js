@@ -14,10 +14,16 @@ router
   .post(authenticateUser, restrictedTo('chef'), postDish)
   .get(authenticateUser, getAllDishes);
 
-router.route('/:id').get(authenticateUser, getDish);
-
-router
+  router
   .route('/getRecommendedDishes')
   .get(authenticateUser, restrictedTo('customer'), getRecommendedDishes);
+
+  router.route('/:id').get(authenticateUser, getDish);
+
+
+
+
+
+
 
 module.exports = router;
