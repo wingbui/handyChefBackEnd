@@ -4,12 +4,9 @@ const { Expo } = require('expo-server-sdk');
 const sendNewBookingPushNotification = async (receivers, booking) => {
   let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
 
-  console.log('sent');
-  console.log(receivers);
   let messages = [];
 
   for (let pushToken of receivers) {
-    console.log(receivers);
     if (!Expo.isExpoPushToken(pushToken)) {
       console.log(`Push token ${pushToken} is not a valid Expo push token`);
       continue;
