@@ -1,5 +1,4 @@
 const Booking = require('../models/Booking');
-const ChefService = require('../models/ChefService');
 
 const createBooking = async (req, res, next) => {
   const {
@@ -9,19 +8,23 @@ const createBooking = async (req, res, next) => {
     selectedDishes,
     notes,
     totalPrice,
+    address,
+    phone,
   } = req.body;
 
   if (
+    !address ||
+    !phone ||
     !bookingDate ||
+    !chefService ||
     !numberOfCustomers ||
     !selectedDishes ||
-    selectedDishes.length <= 0 ||
     !totalPrice ||
-    !chefService
+    selectedDishes.length <= 0
   ) {
     next(
       new Error(
-        'Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice'
+        'Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice, address and phone'
       )
     );
     return;
@@ -29,11 +32,13 @@ const createBooking = async (req, res, next) => {
     try {
       const booking = await Booking.create({
         customer: req.user._id,
-        chefService,
+        address,
+        phone,
         bookingDate,
+        chefService,
+        notes,
         numberOfCustomers,
         selectedDishes,
-        notes,
         totalPrice,
       });
       res.status(200).json({ booking });
