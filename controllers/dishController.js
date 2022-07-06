@@ -72,6 +72,17 @@ const getRecommendedDishes = async (req, res, next) => {
     const dishes = await Dish.find({
       cuisine: preferredCuisine,
       isSpecial: 'true',
+    }).populate({
+      path: 'chefService',
+      model: 'ChefService',
+      select:
+        '-email -userType -favoriteChefs -preferredCuisine -__v -chefService -profileImage -description -minServed -maxServed -currentBookings -menu -cuisine',
+      populate: {
+        path: 'chef',
+        model: 'User',
+        select:
+          '-email -userType -favoriteChefs -preferredCuisine -__v -chefService -pushNotificationToken',
+      },
     });
 
     res.status(200).json({ dishes });
