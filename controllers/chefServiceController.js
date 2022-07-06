@@ -78,7 +78,7 @@ const getAllChefServices = async (req, res, next) => {
   const skip = (page - 1) * limit;
 
   try {
-    let result = ChefService.find(queryObj).populate('chef');
+    let result = ChefService.find(queryObj).populate('chef').populate('menu');;
     result = result.skip(skip).limit(limit);
 
     const chefServices = await result;
