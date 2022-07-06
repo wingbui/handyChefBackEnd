@@ -79,6 +79,7 @@ const getAllChefServices = async (req, res, next) => {
 
   try {
     let result = ChefService.find(queryObj).populate('chef').populate('menu');;
+
     result = result.skip(skip).limit(limit);
 
     const chefServices = await result;
