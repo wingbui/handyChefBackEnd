@@ -10,7 +10,7 @@ const { authenticateUser, restrictedTo } = require('../middleware/auth');
 router
   .route('/')
   .post(authenticateUser, restrictedTo('chef'), postChefService)
-  .get(getAllChefServices)
+  .get(getAllChefServices);
 
 router.route('/').get(getAllChefServices);
 router.route('/:id').get(authenticateUser, getChefService);
