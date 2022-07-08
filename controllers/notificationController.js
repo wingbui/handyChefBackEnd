@@ -60,4 +60,19 @@ const postNewBookingNotification = async (req, res, next) => {
   }
 };
 
-module.exports = { postNewBookingNotification };
+const getNotifications = async (req, res, next) => {
+  if (!req.user.pushNotificationToken) {
+    next(new Error('You do note have have notification token yet'));
+    return;
+  }
+
+  let token = req.user.pushNotificationToken;
+  try {
+    const notifications = await Notification.find({ receivers: token });
+    res.status(200).json({ notifications });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { postNewBookingNotification, getNotifications };
