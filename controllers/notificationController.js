@@ -1,5 +1,6 @@
 const Notification = require('../models/Notification');
 const { Expo } = require('expo-server-sdk');
+const Booking = require('../models/Booking');
 
 const sendNewBookingPushNotification = async (receivers, booking) => {
   let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
@@ -46,8 +47,23 @@ const postNewBookingNotification = async (req, res, next) => {
     return;
   }
 
+  let message = '';
+  switch (type) {
+    case 'newBooking':
+      message = 'You have a new booking from';
+  }
+
   try {
-    let notification = await Notification.create(req.body);
+    let bookingInstance = await Booking.findById({ _id: booking }).populate(
+      'customer'
+    );
+    let { firstName, lastName } = bookingInstance.customer;
+    let notification = await Notification.create({
+      type,
+      receivers,
+      booking,
+      message: message + ' ' + firstName + ' ' + lastName,
+    });
     if (notification) {
       await sendNewBookingPushNotification(
         notification.receivers,
@@ -68,7 +84,10 @@ const getNotifications = async (req, res, next) => {
 
   let token = req.user.pushNotificationToken;
   try {
-    const notifications = await Notification.find({ receivers: token });
+    const notifications = await Notification.find({
+      receivers: token,
+    });
+
     res.status(200).json({ notifications });
   } catch (error) {
     next(error);
