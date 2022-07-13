@@ -68,6 +68,9 @@ const getAllChefBookings = async (req, res, next) => {
   if (bookingDate) {
     queryObj.bookingDate = bookingDate;
   }
+  if (status) {
+    queryObj.status = status;
+  }
 
   queryObj.chefService = req.user.chefService;
 
