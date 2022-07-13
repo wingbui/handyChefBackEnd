@@ -11,6 +11,9 @@ const ChefServiceSchema = new mongoose.Schema({
     default: 'Vancouver, British Columbia, Canada',
   },
   cuisine: [{ type: String, required: true }],
+  banner: {
+    type: String,
+  },
   profileImage: {
     type: String,
   },
