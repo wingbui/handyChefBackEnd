@@ -62,7 +62,7 @@ const getAllBookings = async (req, res, next) => {
 };
 
 const getAllChefBookings = async (req, res, next) => {
-  const { bookingDate } = req.query;
+  const { bookingDate, status } = req.query;
 
   let queryObj = {};
   if (bookingDate) {
