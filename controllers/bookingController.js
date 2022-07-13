@@ -61,10 +61,30 @@ const getAllBookings = async (req, res, next) => {
   }
 };
 
-const getAllBookingsForChef = async (req, res, next) => {
+const getAllChefBookings = async (req, res, next) => {
+  const { bookingDate } = req.query;
+
+  let queryObj = {};
+  if (bookingDate) {
+    queryObj.bookingDate = bookingDate;
+  }
+
+  queryObj.chefService = req.user.chefService;
+
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit) || 15;
+  const skip = (page - 1) * limit;
+
   try {
-    const booking = await Booking.find({ chefService: req.user.chefService });
-    res.status(200).json({ booking });
+    let result = Booking.find(queryObj);
+
+    result = result.skip(skip).limit(limit);
+
+    const bookings = await result;
+
+    const totalBookings = await Booking.countDocuments(queryObj);
+    const pages = Math.ceil(totalBookings / limit);
+    res.status(200).json({ bookings, totalBookings, pages });
   } catch (err) {
     next(err);
   }
@@ -94,7 +114,7 @@ const getChefBooking = async (req, res, next) => {
 module.exports = {
   createBooking,
   getAllBookings,
-  getAllBookingsForChef,
+  getAllChefBookings,
   getCustomerBooking,
   getChefBooking,
 };
