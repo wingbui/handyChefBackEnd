@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   createBooking,
-  getAllBookings,
+  getAllCustomerBookings,
   getCustomerBooking,
   getChefBooking,
   getAllChefBookings,
@@ -12,8 +12,11 @@ const { authenticateUser, restrictedTo } = require('../middleware/auth');
 
 router
   .route('/')
-  .post(authenticateUser, restrictedTo('customer'), createBooking)
-  .get(authenticateUser, restrictedTo('customer'), getAllBookings);
+  .post(authenticateUser, restrictedTo('customer'), createBooking);
+
+router
+  .route('/customer')
+  .get(authenticateUser, restrictedTo('customer'), getAllCustomerBookings);
 
 router
   .route('/chef')
