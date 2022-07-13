@@ -112,7 +112,6 @@ const updateChefService = async (req, res, next) => {
     maxServed,
     currentBookings,
     location,
-    menu,
     profileImage
   } = req.body;
 
@@ -131,7 +130,6 @@ const updateChefService = async (req, res, next) => {
     chefService.maxServed = maxServed;
     chefService.currentBookings = currentBookings;
     chefService.location = location;
-    chefService.menu = menu;
     chefService.profileImage = profileImage;
     chefService.save();
 
