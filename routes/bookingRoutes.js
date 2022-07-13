@@ -3,9 +3,9 @@ const router = express.Router();
 const {
   createBooking,
   getAllBookings,
-  getAllBookingsForChef,
   getCustomerBooking,
   getChefBooking,
+  getAllChefBookings,
 } = require('../controllers/bookingController');
 
 const { authenticateUser, restrictedTo } = require('../middleware/auth');
@@ -17,7 +17,7 @@ router
 
 router
   .route('/chef')
-  .get(authenticateUser, restrictedTo('chef'), getAllBookingsForChef);
+  .get(authenticateUser, restrictedTo('chef'), getAllChefBookings);
 
 router
   .route('/chef/:id')
