@@ -48,14 +48,36 @@ const createBooking = async (req, res, next) => {
   }
 };
 
-const getAllBookings = async (req, res, next) => {
+const getAllCustomerBookings = async (req, res, next) => {
+  const { bookingDate, status } = req.query;
+
+  let queryObj = {};
+  if (bookingDate) {
+    queryObj.bookingDate = bookingDate;
+  }
+  if (status) {
+    queryObj.status = status;
+  }
+
+  queryObj.customer = req.user._id;
+
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit) || 15;
+  const skip = (page - 1) * limit;
+
   try {
-    const booking = await Booking.find({ customer: req.user._id }).populate({
+    let result = Booking.find(queryObj);
+
+    result = result.skip(skip).limit(limit);
+
+    const bookings = await result;
+
+    const totalBookings = await Booking.countDocuments(queryObj).populate({
       path: 'selectedDishes',
       model: 'Dish',
     });
-
-    res.status(200).json({ booking });
+    const pages = Math.ceil(totalBookings / limit);
+    res.status(200).json({ bookings, totalBookings, pages });
   } catch (err) {
     next(err);
   }
@@ -116,8 +138,8 @@ const getChefBooking = async (req, res, next) => {
 
 module.exports = {
   createBooking,
-  getAllBookings,
   getAllChefBookings,
+  getAllCustomerBookings,
   getCustomerBooking,
   getChefBooking,
 };
