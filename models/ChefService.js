@@ -30,6 +30,7 @@ const ChefServiceSchema = new mongoose.Schema({
   },
   currentBookings: [{ type: mongoose.Schema.ObjectId, ref: 'Booking' }],
   menu: [{ type: mongoose.Schema.ObjectId, ref: 'Dish' }],
+  rating: { type: Number },
 });
 
 module.exports = mongoose.model('ChefService', ChefServiceSchema);
