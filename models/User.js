@@ -47,12 +47,12 @@ const UserSchema = new mongoose.Schema({
   ],
   preferredCuisine: [{ type: String }],
   billingAddress: {
-    address: { type: String },
-    phone: { type: Number },
+    address: { type: String, default: null },
+    phone: { type: Number, default: null },
   },
   shippingAddress: {
-    address: { type: String },
-    phone: { type: Number },
+    address: { type: String, default: null },
+    phone: { type: Number, default: null },
   },
   pushNotificationToken: {
     type: String,

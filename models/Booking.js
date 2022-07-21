@@ -23,12 +23,13 @@ const BookingSchema = new mongoose.Schema({
     default: 'todo',
   },
   totalPrice: { type: Number },
-  timestamps: true,
+
   shippingAddress: {
     address: { type: String, required: true },
     phone: { type: Number, required: true },
     totalPrice: { type: Number },
   },
+  time: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);
