@@ -112,7 +112,7 @@ const updateChefService = async (req, res, next) => {
     maxServed,
     currentBookings,
     location,
-    profileImage
+    profileImage,
   } = req.body;
 
   if ((!cuisine.length > 0, !minServed, !maxServed)) {
