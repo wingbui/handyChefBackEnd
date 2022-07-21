@@ -29,7 +29,6 @@ const BookingSchema = new mongoose.Schema({
     phone: { type: Number, required: true },
     totalPrice: { type: Number },
   },
-  bookingTime: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);
