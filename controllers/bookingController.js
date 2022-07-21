@@ -101,13 +101,17 @@ const getAllChefBookings = async (req, res, next) => {
   const skip = (page - 1) * limit;
 
   try {
-    let result = Booking.find(queryObj);
+    let result = Booking.find(queryObj).populate({
+      path: 'customer',
+      model: 'User',
+    });
 
     result = result.skip(skip).limit(limit);
 
     const bookings = await result;
 
     const totalBookings = await Booking.countDocuments(queryObj);
+
     const pages = Math.ceil(totalBookings / limit);
     res.status(200).json({ bookings, totalBookings, pages });
   } catch (err) {
@@ -125,6 +129,7 @@ const getCustomerBooking = async (req, res, next) => {
     next(err);
   }
 };
+
 const getChefBooking = async (req, res, next) => {
   const id = req.params.id;
 
