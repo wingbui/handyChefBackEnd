@@ -5,7 +5,7 @@ const BookingSchema = new mongoose.Schema({
     address: { type: String, required: true },
     phone: { type: Number, required: true },
   },
-  bookingDate: { type: Date },
+  bookingDate: { type: Date, required: true },
   chefService: { type: mongoose.Schema.ObjectId, ref: 'ChefService' },
   customer: { type: mongoose.Schema.ObjectId, ref: 'User' },
   notes: { type: String },
