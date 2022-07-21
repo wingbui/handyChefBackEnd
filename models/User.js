@@ -46,6 +46,14 @@ const UserSchema = new mongoose.Schema({
     },
   ],
   preferredCuisine: [{ type: String }],
+  billingAddress: {
+    address: { type: String },
+    phone: { type: Number },
+  },
+  shippingAddress: {
+    address: { type: String },
+    phone: { type: Number },
+  },
   pushNotificationToken: {
     type: String,
   },

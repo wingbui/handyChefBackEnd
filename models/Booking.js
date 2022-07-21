@@ -10,7 +10,13 @@ const BookingSchema = new mongoose.Schema({
   customer: { type: mongoose.Schema.ObjectId, ref: 'User' },
   notes: { type: String },
   numberOfCustomers: { type: Number },
-  selectedDishes: [{ type: mongoose.Schema.ObjectId, reference: 'Dish ' }],
+  selectedDishes: [
+    {
+      type: mongoose.Schema.ObjectId,
+      reference: 'Dish ',
+      quantity: { type: Number, default: 1, required: true },
+    },
+  ],
   status: {
     type: String,
     enum: ['todo', 'cancelled', 'done'],
