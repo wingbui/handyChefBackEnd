@@ -8,13 +8,13 @@ const createBooking = async (req, res, next) => {
     selectedDishes,
     notes,
     totalPrice,
-    address,
-    phone,
+    billingAddress,
+    shippingAddress,
   } = req.body;
 
   if (
-    !address ||
-    !phone ||
+    !billingAddress ||
+    !shippingAddress ||
     !bookingDate ||
     !chefService ||
     !numberOfCustomers ||
@@ -24,7 +24,7 @@ const createBooking = async (req, res, next) => {
   ) {
     next(
       new Error(
-        'Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice, address and phone'
+        'Please enter all the values:  bookingDate, chefService, numberOfCustomers, selectedDishes, totalPrice, billingAddress and shippingAddress'
       )
     );
     return;
@@ -32,9 +32,9 @@ const createBooking = async (req, res, next) => {
     try {
       const booking = await Booking.create({
         customer: req.user._id,
-        address,
-        phone,
         bookingDate,
+        billingAddress,
+        shippingAddress,
         chefService,
         notes,
         numberOfCustomers,
