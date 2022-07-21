@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema({
-  address: { type: String, required: true },
-  phone: { type: Number, required: true },
+  billingAddress: {
+    address: { type: String, required: true },
+    phone: { type: Number, required: true },
+  },
   bookingDate: { type: Date },
   chefService: { type: mongoose.Schema.ObjectId, ref: 'ChefService' },
   customer: { type: mongoose.Schema.ObjectId, ref: 'User' },
@@ -15,6 +17,12 @@ const BookingSchema = new mongoose.Schema({
     default: 'todo',
   },
   totalPrice: { type: Number },
+  timestamps: true,
+  shippingAddress: {
+    address: { type: String, required: true },
+    phone: { type: Number, required: true },
+    totalPrice: { type: Number },
+  },
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);

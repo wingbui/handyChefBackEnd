@@ -9,6 +9,7 @@ const DishSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  quantity: { type: Number, default: 1, required: true },
   chefService: {
     type: mongoose.Schema.ObjectId,
     ref: 'ChefService',
