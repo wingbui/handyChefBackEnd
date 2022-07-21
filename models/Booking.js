@@ -12,8 +12,7 @@ const BookingSchema = new mongoose.Schema({
   numberOfCustomers: { type: Number },
   selectedDishes: [
     {
-      type: mongoose.Schema.ObjectId,
-      reference: 'Dish ',
+      dish: { type: mongoose.Schema.ObjectId, reference: 'Dish ' },
       quantity: { type: Number, default: 1, required: true },
     },
   ],
