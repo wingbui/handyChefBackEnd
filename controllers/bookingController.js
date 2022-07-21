@@ -84,6 +84,7 @@ const getAllCustomerBookings = async (req, res, next) => {
 };
 
 const getAllChefBookings = async (req, res, next) => {
+  console.log('api call')
   const { bookingDate, status } = req.query;
 
   let queryObj = {};
