@@ -76,15 +76,20 @@ const addPreferredCuisine = async (req, res, next) => {
 
 const getCurrentUser = async (req, res, next) => {
   try {
-    let currentUser = await User.findById(req.user._id).populate({
-      path: 'favoriteChefs',
-      model: 'ChefService',
-      populate: {
-        path: 'chef',
-        model: 'User',
-        select: '-favoriteChefs -preferredCuisine -chefService',
-      },
-    });
+    let currentUser = await User.findById(req.user._id)
+      .populate({
+        path: 'favoriteChefs',
+        model: 'ChefService',
+        populate: {
+          path: 'chef',
+          model: 'User',
+          select: '-favoriteChefs -preferredCuisine -chefService',
+        },
+      })
+      .populate({
+        path: 'chefService',
+        model: 'ChefService',
+      });
     res.json({ currentUser });
   } catch (error) {
     next(error);
