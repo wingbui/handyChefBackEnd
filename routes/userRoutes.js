@@ -28,7 +28,7 @@ router
 router.route('/getCurrentUser').get(authenticateUser, getCurrentUser);
 
 router
-  .route('/homAddress')
-  .post(authenticateUser, restrictedTo('customer'), persistCustomerAddress);
+  .route('/address')
+  .patch(authenticateUser, restrictedTo('customer'), persistCustomerAddress);
 
 module.exports = router;

@@ -91,15 +91,15 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-const persistCustomerAddress = (req, res, next) => {
+const persistCustomerAddress = async (req, res, next) => {
   const { billingAddress, shippingAddress } = req.body;
-  if (!address) {
+  if (!billingAddress || !shippingAddress) {
     next(new Error('Please pass in the address'));
     return;
   }
 
   try {
-    let currentUser = User.findById(req.user._id);
+    let currentUser = await User.findById(req.user._id);
     currentUser.billingAddress = billingAddress;
     currentUser.shippingAddress = shippingAddress;
     currentUser.save();
@@ -108,8 +108,6 @@ const persistCustomerAddress = (req, res, next) => {
     next(error);
   }
 };
-
-const getCustomerAddress = (req, res, next) => {};
 
 module.exports = {
   toggleAddRemoveFavoriteChef,
