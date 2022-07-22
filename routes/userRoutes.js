@@ -5,6 +5,7 @@ const {
   persistPushNotificationToken,
   addPreferredCuisine,
   getCurrentUser,
+  persistCustomerAddress,
 } = require('../controllers/userController');
 const { authenticateUser, restrictedTo } = require('../middleware/auth');
 
@@ -25,5 +26,9 @@ router
   .patch(authenticateUser, persistPushNotificationToken);
 
 router.route('/getCurrentUser').get(authenticateUser, getCurrentUser);
+
+router
+  .route('/address')
+  .patch(authenticateUser, restrictedTo('customer'), persistCustomerAddress);
 
 module.exports = router;
