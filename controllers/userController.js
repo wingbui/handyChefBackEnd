@@ -82,10 +82,28 @@ const getCurrentUser = async (req, res, next) => {
       populate: {
         path: 'chef',
         model: 'User',
-        select: '-favoriteChefs -preferredCuisine -chefService'
+        select: '-favoriteChefs -preferredCuisine -chefService',
       },
     });
     res.json({ currentUser });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const persistCustomerAddress = async (req, res, next) => {
+  const { billingAddress, shippingAddress } = req.body;
+  if (!billingAddress || !shippingAddress) {
+    next(new Error('Please pass in the address'));
+    return;
+  }
+
+  try {
+    let currentUser = await User.findById(req.user._id);
+    currentUser.billingAddress = billingAddress;
+    currentUser.shippingAddress = shippingAddress;
+    currentUser.save();
+    res.json({ user: currentUser });
   } catch (error) {
     next(error);
   }
@@ -96,4 +114,5 @@ module.exports = {
   persistPushNotificationToken,
   addPreferredCuisine,
   getCurrentUser,
+  persistCustomerAddress,
 };
