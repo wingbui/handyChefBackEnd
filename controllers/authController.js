@@ -1,16 +1,8 @@
 const User = require('../models/User.js');
 
 const register = async (req, res, next) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    userType,
-    profileImage,
-    billingAddress,
-    shippingAddress,
-  } = req.body;
+  const { firstName, lastName, email, password, userType, profileImage } =
+    req.body;
 
   if (!firstName || !lastName || !email || !password || !userType) {
     next(
@@ -44,8 +36,6 @@ const register = async (req, res, next) => {
       password,
       userType,
       profileImage,
-      billingAddress,
-      shippingAddress,
     });
     const token = user.createJWT();
     res.status(201).json({
@@ -55,8 +45,6 @@ const register = async (req, res, next) => {
         email: user.email,
         userType: user.userType,
         profileImage: user.profileImage,
-        billingAddress: user.billingAddress,
-        shippingAddress: user.shippingAddress,
       },
       token,
     });
