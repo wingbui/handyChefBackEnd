@@ -91,4 +91,31 @@ const getRecommendedDishes = async (req, res, next) => {
   }
 };
 
-module.exports = { postDish, getDish, getAllDishes, getRecommendedDishes };
+const editDish = async (req, res, next) => {
+  const { name, price, cuisine, dishImage, isSpecial } = req.body;
+  if (!name || !price || !cuisine) {
+    next(new Error(`Please provide name, price, and cuisine`));
+    return;
+  }
+
+  try {
+    const dish = await Dish.findByIdAndUpdate(req.params.id, {
+      name,
+      price,
+      cuisine,
+      dishImage,
+      isSpecial,
+    });
+    res.status(200).json({ dish: dish });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  postDish,
+  getDish,
+  getAllDishes,
+  getRecommendedDishes,
+  editDish,
+};
