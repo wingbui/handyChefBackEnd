@@ -92,6 +92,9 @@ const getRecommendedDishes = async (req, res, next) => {
 };
 
 const editDish = async (req, res, next) => {
+  const id = req.params.id;
+  console.log('update');
+
   const { name, price, cuisine, dishImage, isSpecial } = req.body;
   if (!name || !price || !cuisine) {
     next(new Error(`Please provide name, price, and cuisine`));
@@ -99,14 +102,16 @@ const editDish = async (req, res, next) => {
   }
 
   try {
-    const dish = await Dish.findByIdAndUpdate(req.params.id, {
-      name,
-      price,
-      cuisine,
-      dishImage,
-      isSpecial,
-    });
-    res.status(200).json({ dish: dish });
+    const dish = await Dish.findById(id);
+    dish.name = name;
+    dish.price = price;
+    dish.cuisine = cuisine;
+    dish.dishImage = dishImage;
+    dish.isSpecial = isSpecial;
+
+    dish.save();
+
+    res.status(200).json({ dish });
   } catch (err) {
     next(err);
   }
