@@ -22,7 +22,7 @@ router
 router.route('/:id').get(authenticateUser, getDish);
 
 router
-  .route('/editDish/:id')
+  .route('/:id')
   .patch(authenticateUser, restrictedTo('chef'), editDish);
 
 module.exports = router;
