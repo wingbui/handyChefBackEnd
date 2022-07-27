@@ -11,6 +11,9 @@ const ChefServiceSchema = new mongoose.Schema({
     default: 'Vancouver, British Columbia, Canada',
   },
   cuisine: [{ type: String, required: true }],
+  banner: {
+    type: String,
+  },
   profileImage: {
     type: String,
   },
@@ -27,6 +30,7 @@ const ChefServiceSchema = new mongoose.Schema({
   },
   currentBookings: [{ type: mongoose.Schema.ObjectId, ref: 'Booking' }],
   menu: [{ type: mongoose.Schema.ObjectId, ref: 'Dish' }],
+  rating: { type: Number },
 });
 
 module.exports = mongoose.model('ChefService', ChefServiceSchema);

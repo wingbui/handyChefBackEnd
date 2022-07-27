@@ -14,10 +14,11 @@ const postChefService = async (req, res, next) => {
 
   const {
     cuisine,
-    profileImage,
+    banner,
     description,
     minServed,
     maxServed,
+    location,
     currentBookings,
   } = req.body;
 
@@ -49,7 +50,12 @@ const getChefService = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const chefService = await ChefService.findById(id).populate('menu');
+    const chefService = await ChefService.findById(id)
+      .populate('menu')
+      .populate({
+        path: 'chef',
+        select: '-preferredCuisine -_id -chefService -favoriteChefs',
+      });
     res.status(200).json({ chefService });
   } catch (err) {
     next(err);
@@ -76,7 +82,7 @@ const getAllChefServices = async (req, res, next) => {
   const skip = (page - 1) * limit;
 
   try {
-    let result = ChefService.find(queryObj);
+    let result = ChefService.find(queryObj).populate('chef').populate('menu');
     result = result.skip(skip).limit(limit);
 
     const chefServices = await result;
@@ -94,11 +100,48 @@ const getAllChefServices = async (req, res, next) => {
   }
 };
 
-const patchChefService = async (req, res, next) => {};
+const updateChefService = async (req, res, next) => {
+  const id = req.params.id;
+  console.log('update');
+
+  const {
+    cuisine,
+    banner,
+    description,
+    minServed,
+    maxServed,
+    currentBookings,
+    location,
+    profileImage,
+  } = req.body;
+
+  if ((!cuisine.length > 0, !minServed, !maxServed)) {
+    throw new Error(
+      'Please provide cuisine, minimum and maximum customer you served'
+    );
+  }
+
+  try {
+    const chefService = await ChefService.findById(id);
+    chefService.banner = banner;
+    chefService.cuisine = cuisine;
+    chefService.description = description;
+    chefService.minServed = minServed;
+    chefService.maxServed = maxServed;
+    chefService.currentBookings = currentBookings;
+    chefService.location = location;
+    chefService.profileImage = profileImage;
+    chefService.save();
+
+    res.status(200).json({ chefService });
+  } catch (err) {
+    next(err);
+  }
+};
 
 module.exports = {
   postChefService,
   getChefService,
   getAllChefServices,
-  patchChefService,
+  updateChefService,
 };

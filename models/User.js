@@ -4,6 +4,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: [true, 'Please provide your first name'],
+    minlength: 1,
+    maxLength: 50,
+  },
+  lastName: {
+    type: String,
+    required: [true, 'Please provide your last name'],
+    minlength: 1,
+    maxLength: 50,
+  },
   email: {
     type: String,
     required: [true, 'Please provide email'],
@@ -33,6 +45,21 @@ const UserSchema = new mongoose.Schema({
       ref: 'ChefService',
     },
   ],
+  preferredCuisine: [{ type: String }],
+  billingAddress: {
+    address: { type: String, default: null },
+    phone: { type: Number, default: null },
+  },
+  shippingAddress: {
+    address: { type: String, default: null },
+    phone: { type: Number, default: null },
+  },
+  pushNotificationToken: {
+    type: String,
+  },
+  profileImage: {
+    type: String,
+  },
 });
 
 UserSchema.pre('save', async function () {
