@@ -66,15 +66,22 @@ const getAllCustomerBookings = async (req, res, next) => {
   const skip = (page - 1) * limit;
 
   try {
-    let result = Booking.find(queryObj).populate({
+    let result = Booking.find(queryObj)
+      .populate({
         path: 'chefService',
         model: 'ChefService',
-        populate:{
+        populate: {
           path: 'chef',
           model: 'User',
-        }
+        },
+      })
+      .populate({
+        path: 'selectedDishes',
+        populate: {
+          path: 'dish',
+          model: 'Dish',
+        },
       });
-    
 
     result = result.skip(skip).limit(limit);
 
