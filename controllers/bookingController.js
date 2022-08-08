@@ -100,7 +100,16 @@ const getAllChefBookings = async (req, res, next) => {
   const { bookingDate, status } = req.query;
 
   let queryObj = {};
-  if (bookingDate && new Date(bookingDate) !== 'Invalid Date') {
+
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+  if (bookingDate && !isValidDate(new Date(bookingDate))) {
+    next(new Error('Please enter a valid date'));
+    return;
+  }
+
+  if (bookingDate && isValidDate(new Date(bookingDate))) {
     const date1 = new Date(bookingDate);
     let date2 = new Date(date1);
     date2.setDate(date2.getDate() + 1);
