@@ -101,7 +101,18 @@ const getAllChefBookings = async (req, res, next) => {
 
   let queryObj = {};
   if (bookingDate) {
-    queryObj.bookingDate = bookingDate;
+    const date1 = new Date(bookingDate);
+    let date2 = new Date(date1)
+    date2.setDate(date2.getDate() + 1);
+
+    const dateStr = new Date(bookingDate).toISOString();
+    const dateStrEnd = new Date(date2).toISOString();
+
+
+    queryObj.bookingDate = {
+      $gte: dateStr,
+      $lt: dateStrEnd,
+    };
   }
   if (status) {
     queryObj.status = status;
