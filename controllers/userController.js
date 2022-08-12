@@ -61,7 +61,7 @@ const persistPushNotificationToken = async (req, res, next) => {
     } else if (!currentUser.pushNotificationToken) {
       currentUser.pushNotificationToken = [pushNotificationToken];
     } else if (
-      !currentUser.pushNotificationTokens.includes(pushNotificationToken)
+      !currentUser.pushNotificationToken.includes(pushNotificationToken)
     ) {
       currentUser.pushNotificationToken.push(pushNotificationToken);
     }
