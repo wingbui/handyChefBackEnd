@@ -46,8 +46,25 @@ const persistPushNotificationToken = async (req, res, next) => {
 
   try {
     let currentUser = await User.findById(req.user._id);
-    currentUser.pushNotificationToken = pushNotificationToken;
 
+    if (
+      currentUser.pushNotificationToken &&
+      !isArray(currentUser.pushNotificationToken)
+    ) {
+      currentUser.pushNotificationToken = [
+        currentUser.pushNotificationToken,
+        pushNotificationToken,
+      ];
+      currentUser.pushNotificationToken = [
+        ...new Set(currentUser.pushNotificationToken),
+      ];
+    } else if (!currentUser.pushNotificationToken) {
+      currentUser.pushNotificationToken = [pushNotificationToken];
+    } else if (
+      !currentUser.pushNotificationTokens.includes(pushNotificationToken)
+    ) {
+      currentUser.pushNotificationToken.push(pushNotificationToken);
+    }
     await currentUser.save();
     res.json({ user: currentUser });
   } catch (err) {
@@ -76,7 +93,7 @@ const addPreferredCuisine = async (req, res, next) => {
 
 const getCurrentUser = async (req, res, next) => {
   try {
-      let currentUser = await User.findById(req.user._id)
+    let currentUser = await User.findById(req.user._id)
       .populate({
         path: 'favoriteChefs',
         model: 'ChefService',

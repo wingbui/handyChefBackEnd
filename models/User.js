@@ -54,9 +54,7 @@ const UserSchema = new mongoose.Schema({
     address: { type: String, default: null },
     phone: { type: Number, default: null },
   },
-  pushNotificationToken: {
-    type: String,
-  },
+  pushNotificationToken: [{ type: String }],
   profileImage: {
     type: String,
   },
