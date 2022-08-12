@@ -49,7 +49,7 @@ const persistPushNotificationToken = async (req, res, next) => {
 
     if (
       currentUser.pushNotificationToken &&
-      !isArray(currentUser.pushNotificationToken)
+      !Array.isArray(currentUser.pushNotificationToken)
     ) {
       currentUser.pushNotificationToken = [
         currentUser.pushNotificationToken,
